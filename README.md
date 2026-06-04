@@ -38,21 +38,3 @@ Sửa `src/appsettings.json` (copy từ `appsettings.example.json`). Truy cập:
 
 ---
 
-## Backup database
-
-```powershell
-cd src
-.\backup-database.ps1
-```
-
----
-
-## Git (repo ở thư mục gốc `khachsan`)
-
-```powershell
-cd C:\Users\Admin\Desktop\khachsan
-git status
-git add .
-git commit -m "Mo ta"
-git push
-```
