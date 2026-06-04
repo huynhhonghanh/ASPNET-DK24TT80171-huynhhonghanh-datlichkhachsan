@@ -8,73 +8,51 @@
 
 ---
 
-## Giới thiệu
-
-Website **Vũng Tàu Booking** giúp khách hàng tìm và đặt phòng khách sạn ven biển; quản trị viên quản lý khách sạn, phòng, đơn đặt và tài khoản.
-
-**Công nghệ:** ASP.NET Core MVC (.NET 8), Entity Framework Core, SQL Server, Bootstrap 5.
-
----
-
-## Cấu trúc thư mục
+## Cấu trúc thư mục (theo quy định đồ án)
 
 ```
 khachsan/
-├── README.md              ← File này
-├── đồ án.md               ← Báo cáo chi tiết
-└── src/                   ← Mã nguồn website
-    ├── backup-database.ps1
-    └── backups/           ← File .bak, .sql, .zip (sau khi chạy backup)
+├── README.md
+├── src/                 ← Mã nguồn ASP.NET Core MVC
+├── thesis/              ← Báo cáo (doc, pdf)
+└── setup/               ← Script, dữ liệu mẫu (backup DB)
+    └── dulieu/
 ```
 
 ---
 
-## Cài đặt và chạy
-
-**Yêu cầu:** .NET 8 SDK, SQL Server.
-
-1. Mở thư mục `src`, copy `appsettings.example.json` thành `appsettings.json` và sửa connection string.
-2. Chạy:
+## Chạy website
 
 ```powershell
 cd src
 dotnet restore
-dotnet build
 dotnet run
 ```
 
-3. Mở trình duyệt: `http://localhost:5110`
+Sửa `src/appsettings.json` (copy từ `appsettings.example.json`). Truy cập: `http://localhost:5110`
 
-**Tài khoản demo:**
-
-| Vai trò | Tên đăng nhập | Mật khẩu |
-|---------|---------------|----------|
+| Vai trò | User | Password |
+|---------|------|----------|
 | Admin | admin | Admin@123 |
 | Khách | khach1 | 123456 |
-| Khách | khach2 | 123456 |
 
 ---
 
-## Backup database (nộp bài)
+## Backup database
 
 ```powershell
 cd src
 .\backup-database.ps1
 ```
 
-Kết quả trong `src\backups\`: file `.bak`, `.sql` và `.zip` — gửi kèm cho giảng viên.
-
-**Khôi phục .bak:** SQL Server Management Studio → Restore Database.
-
 ---
 
-## Publish (tùy chọn)
+## Git (repo ở thư mục gốc `khachsan`)
 
 ```powershell
-cd src
-dotnet publish DatPhongKhachSanVungTau.csproj -c Release -o ..\publish
+cd C:\Users\Admin\Desktop\khachsan
+git status
+git add .
+git commit -m "Mo ta"
+git push
 ```
-
----
-
-*Báo cáo đầy đủ: xem file `đồ án.md`.*

@@ -1,0 +1,91 @@
+@model DatPhong
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = $"Đặt phòng #{Model.MaDatPhong}";
+    var trangThais = new[]
+    {
+        HangSo.TrangThaiDatChoXacNhan,
+        HangSo.TrangThaiDatDaXacNhan,
+        HangSo.TrangThaiDatDaNhanPhong,
+        HangSo.TrangThaiDatDaTraPhong,
+        HangSo.TrangThaiDatDaHuy
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-primary mb-0">Đơn #@Model.MaDatPhong</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">← Danh sách</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">Thông tin đặt phòng</div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Khách hàng</dt>
+                    <dd class="col-sm-8">@Model.NguoiDung?.HoTen (@Model.NguoiDung?.Email)</dd>
+                    <dt class="col-sm-4">Khách sạn</dt>
+                    <dd class="col-sm-8">@Model.Phong?.KhachSan?.TenKhachSan</dd>
+                    <dt class="col-sm-4">Phòng</dt>
+                    <dd class="col-sm-8">@Model.Phong?.SoPhong — @Model.Phong?.LoaiPhong?.TenLoaiPhong</dd>
+                    <dt class="col-sm-4">Ngày nhận / trả</dt>
+                    <dd class="col-sm-8">@Model.NgayNhanPhong.ToString("dd/MM/yyyy") → @Model.NgayTraPhong.ToString("dd/MM/yyyy") (@Model.SoDem đêm)</dd>
+                    <dt class="col-sm-4">Số khách</dt>
+                    <dd class="col-sm-8">@Model.SoKhach</dd>
+                    <dt class="col-sm-4">Tổng tiền</dt>
+                    <dd class="col-sm-8 fw-bold text-success">@TienTeHelper.DinhDangVnd(Model.TongTien)</dd>
+                    <dt class="col-sm-4">Thanh toán</dt>
+                    <dd class="col-sm-8">@Model.PhuongThucThanhToan</dd>
+                    <dt class="col-sm-4">Ngày đặt</dt>
+                    <dd class="col-sm-8">@Model.NgayDat.ToString("dd/MM/yyyy HH:mm")</dd>
+                    <dt class="col-sm-4">Ghi chú</dt>
+                    <dd class="col-sm-8">@(Model.GhiChu ?? "—")</dd>
+                    <dt class="col-sm-4">Trạng thái hiện tại</dt>
+                    <dd class="col-sm-8"><span class="badge bg-primary">@Model.TrangThai</span></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">Cập nhật trạng thái</div>
+            <div class="card-body">
+                <form asp-action="CapNhatTrangThai" method="post" class="mb-3">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.MaDatPhong" />
+                    <select name="trangThai" class="form-select mb-2">
+                        @foreach (var tt in trangThais)
+                        {
+                            if (Model.TrangThai == tt)
+                            {
+                                <option value="@tt" selected>@tt</option>
+                            }
+                            else
+                            {
+                                <option value="@tt">@tt</option>
+                            }
+                        }
+                    </select>
+                    <button type="submit" class="btn btn-primary w-100">Cập nhật</button>
+                </form>
+
+                @if (Model.TrangThai == HangSo.TrangThaiDatChoXacNhan)
+                {
+                    <form asp-action="XacNhan" asp-route-id="@Model.MaDatPhong" method="post" class="mb-2">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-success w-100">Xác nhận nhanh</button>
+                    </form>
+                }
+                @if (Model.TrangThai != HangSo.TrangThaiDatDaHuy && Model.TrangThai != HangSo.TrangThaiDatDaTraPhong)
+                {
+                    <form asp-action="Huy" asp-route-id="@Model.MaDatPhong" method="post"
+                          onsubmit="return confirm('Hủy đơn đặt phòng này?');">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-outline-danger w-100">Hủy đơn</button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>

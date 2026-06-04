@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#f8fbff"/>
+  <rect x="60" y="80" width="780" height="360" rx="24" fill="#00b4d8" opacity="0.12"/>
+  <path d="M120 370 C 260 320, 420 440, 560 370 S 700 320, 780 388 L780 420 L120 420 Z" fill="#023e8a" opacity="0.25"/>
+  <text x="70" y="140" font-family="Segoe UI, Arial" font-size="40" font-weight="700" fill="#023e8a">Cap Saint Jacques - Phòng ôi</text>
+  <text x="70" y="180" font-family="Segoe UI, Arial" font-size="22" fill="#0077b6">¢nh phòng m«u (SVG)</text>
+</svg>
+

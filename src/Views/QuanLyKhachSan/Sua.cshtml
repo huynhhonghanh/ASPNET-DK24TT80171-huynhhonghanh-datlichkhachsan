@@ -1,0 +1,79 @@
+@model KhachSan
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Sửa khách sạn";
+    var khuVucs = (string[])ViewBag.DanhSachKhuVuc;
+}
+
+<h2 class="fw-bold text-primary mb-4">Sửa khách sạn</h2>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <form asp-action="Sua" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="MaKhachSan" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @if (!string.IsNullOrEmpty(Model.HinhAnh))
+            {
+                <div class="mb-3">
+                    <img src="@Model.HinhAnh" alt="" class="rounded" style="max-height:120px;" />
+                </div>
+            }
+
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <label asp-for="TenKhachSan" class="form-label"></label>
+                    <input asp-for="TenKhachSan" class="form-control" />
+                    <span asp-validation-for="TenKhachSan" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="KhuVuc" class="form-label"></label>
+                    <select asp-for="KhuVuc" class="form-select">
+                        @foreach (var kv in khuVucs)
+                        {
+                            if (Model.KhuVuc == kv)
+                            {
+                                <option value="@kv" selected>@kv</option>
+                            }
+                            else
+                            {
+                                <option value="@kv">@kv</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label asp-for="DiaChiChiTiet" class="form-label"></label>
+                    <input asp-for="DiaChiChiTiet" class="form-control" />
+                    <span asp-validation-for="DiaChiChiTiet" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="XepHang" class="form-label"></label>
+                    <input asp-for="XepHang" type="number" min="1" max="5" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="KhoangCachBien" class="form-label"></label>
+                    <input asp-for="KhoangCachBien" type="number" min="0" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Đổi hình ảnh</label>
+                    <input type="file" name="hinhAnh" class="form-control" accept="image/*" />
+                </div>
+                <div class="col-12">
+                    <label asp-for="MoTa" class="form-label"></label>
+                    <textarea asp-for="MoTa" class="form-control" rows="4"></textarea>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

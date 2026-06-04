@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#f8fbff"/>
+  <rect x="60" y="80" width="780" height="360" rx="24" fill="#90e0ef" opacity="0.22"/>
+  <path d="M220 360 L450 200 L680 360 Z" fill="#2a9d8f" opacity="0.85"/>
+  <rect x="380" y="280" width="140" height="120" rx="12" fill="#ffffff" opacity="0.85"/>
+  <text x="70" y="140" font-family="Segoe UI, Arial" font-size="40" font-weight="700" fill="#023e8a">Lan Rëng - Bungalow</text>
+  <text x="70" y="180" font-family="Segoe UI, Arial" font-size="22" fill="#0077b6">¢nh phòng m«u (SVG)</text>
+</svg>
+

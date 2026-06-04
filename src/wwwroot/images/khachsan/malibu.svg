@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#f8fbff"/>
+  <rect x="60" y="80" width="780" height="360" rx="22" fill="#0077b6" opacity="0.18"/>
+  <rect x="120" y="150" width="660" height="230" rx="18" fill="#00b4d8" opacity="0.25"/>
+  <path d="M120 380 C 220 340, 360 430, 520 380 S 720 340, 780 390 L780 420 L120 420 Z" fill="#48cae4" opacity="0.55"/>
+  <text x="70" y="140" font-family="Segoe UI, Arial" font-size="44" font-weight="700" fill="#023e8a">Malibu Hotel</text>
+  <text x="70" y="180" font-family="Segoe UI, Arial" font-size="22" fill="#0077b6">¢nh khách s¡n m«u (SVG)</text>
+</svg>
+

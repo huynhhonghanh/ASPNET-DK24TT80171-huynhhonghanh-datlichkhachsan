@@ -1,0 +1,101 @@
+@using DatPhongKhachSanVungTau.Services
+@{
+    var hoTen = Context.Session.GetString(PhienDangNhap.KhoaHoTen) ?? "Admin";
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Quản trị</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .admin-sidebar { min-height: calc(100vh - 56px); background: linear-gradient(180deg, #023e8a 0%, #0077b6 100%); }
+        .admin-sidebar .nav-link { color: rgba(255,255,255,.85); border-radius: .5rem; margin-bottom: .25rem; }
+        .admin-sidebar .nav-link:hover, .admin-sidebar .nav-link.active { background: rgba(255,255,255,.15); color: #fff; }
+        .admin-topbar { background: #fff; border-bottom: 1px solid #dee2e6; }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark admin-topbar navbar-expand-lg" style="background: linear-gradient(90deg, #023e8a, #0077b6) !important;">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold text-white" href="/Admin/Dashboard">
+                <i class="bi bi-shield-lock me-1"></i> Admin Vũng Tàu
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-light">
+                    <i class="bi bi-house"></i> Trang khách
+                </a>
+                <span class="text-white small"><i class="bi bi-person-badge"></i> @hoTen</span>
+                <form asp-controller="TaiKhoan" asp-action="DangXuat" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-sm btn-outline-light">Đăng xuất</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 admin-sidebar p-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link @(controller == "Dashboard" ? "active" : "")" href="/Admin/Dashboard">
+                            <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(controller == "QuanLyKhachSan" ? "active" : "")" href="/Admin/QuanLyKhachSan">
+                            <i class="bi bi-building me-2"></i> Khách sạn
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(controller == "QuanLyLoaiPhong" ? "active" : "")" href="/Admin/QuanLyLoaiPhong">
+                            <i class="bi bi-door-open me-2"></i> Loại phòng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(controller == "QuanLyPhong" ? "active" : "")" href="/Admin/QuanLyPhong">
+                            <i class="bi bi-key me-2"></i> Phòng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(controller == "QuanLyDatPhong" ? "active" : "")" href="/Admin/QuanLyDatPhong">
+                            <i class="bi bi-calendar-check me-2"></i> Đặt phòng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(controller == "QuanLyKhachHang" ? "active" : "")" href="/Admin/QuanLyKhachHang">
+                            <i class="bi bi-people me-2"></i> Khách hàng
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <main class="col-md-9 col-lg-10 p-4">
+                @if (TempData["ThongBao"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show">
+                        @TempData["ThongBao"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @if (TempData["Loi"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        @TempData["Loi"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

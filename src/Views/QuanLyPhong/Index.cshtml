@@ -1,0 +1,73 @@
+@model IEnumerable<Phong>
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Quản lý phòng";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <h2 class="fw-bold text-primary mb-0"><i class="bi bi-key me-2"></i>Phòng</h2>
+    <a asp-action="Tao" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Thêm mới</a>
+</div>
+
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-body py-3">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-6">
+                <label class="form-label small mb-1">Lọc theo khách sạn</label>
+                <select name="maKhachSan" class="form-select form-select-sm" asp-items="ViewBag.KhachSans">
+                    <option value="">— Tất cả —</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-sm btn-primary">Lọc</button>
+                <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Xóa lọc</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle small">
+            <thead class="table-light">
+                <tr>
+                    <th>Ảnh</th>
+                    <th>Số phòng</th>
+                    <th>Khách sạn</th>
+                    <th>Loại</th>
+                    <th>Giá/đêm</th>
+                    <th>Hướng</th>
+                    <th>Trạng thái</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(p.HinhAnh))
+                        {
+                            <img src="@p.HinhAnh" alt="" class="rounded" style="width:48px;height:36px;object-fit:cover;" />
+                        }
+                    </td>
+                    <td class="fw-semibold">@p.SoPhong</td>
+                    <td>@p.KhachSan?.TenKhachSan</td>
+                    <td>@p.LoaiPhong?.TenLoaiPhong</td>
+                    <td>@TienTeHelper.DinhDangVnd(p.GiaMotDem)</td>
+                    <td>@p.HuongPhong</td>
+                    <td><span class="badge bg-secondary">@p.TrangThai</span></td>
+                    <td class="text-end text-nowrap">
+                        <a asp-action="Sua" asp-route-id="@p.MaPhong" class="btn btn-sm btn-outline-primary">Sửa</a>
+                        <form asp-action="Xoa" asp-route-id="@p.MaPhong" method="post" class="d-inline"
+                              onsubmit="return confirm('Xóa phòng này?');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

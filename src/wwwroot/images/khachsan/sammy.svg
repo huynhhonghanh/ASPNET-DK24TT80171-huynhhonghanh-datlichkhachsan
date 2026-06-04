@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#f8fbff"/>
+  <rect x="70" y="90" width="760" height="340" rx="22" fill="#023e8a" opacity="0.12"/>
+  <rect x="120" y="160" width="660" height="210" rx="18" fill="#0077b6" opacity="0.26"/>
+  <circle cx="720" cy="180" r="28" fill="#ffd166" opacity="0.9"/>
+  <text x="80" y="150" font-family="Segoe UI, Arial" font-size="44" font-weight="700" fill="#023e8a">Sammy Hotel</text>
+  <text x="80" y="190" font-family="Segoe UI, Arial" font-size="22" fill="#0077b6">¢nh khách s¡n m«u (SVG)</text>
+</svg>
+

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="600" viewBox="0 0 1600 600">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#90e0ef"/>
+      <stop offset="100%" stop-color="#caf0f8"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#023e8a"/>
+      <stop offset="50%" stop-color="#0077b6"/>
+      <stop offset="100%" stop-color="#00b4d8"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6e7c2"/>
+      <stop offset="100%" stop-color="#f4e4bc"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="360" fill="url(#sky)"/>
+  <rect y="330" width="1600" height="170" fill="url(#sea)"/>
+  <rect y="480" width="1600" height="120" fill="url(#sand)"/>
+
+  <circle cx="1300" cy="120" r="55" fill="#ffd166" opacity="0.95"/>
+  <path d="M0 380 C 220 330, 420 430, 650 380 S 1080 330, 1600 390 L1600 420 L0 420 Z" fill="#48cae4" opacity="0.55"/>
+  <path d="M0 410 C 240 360, 520 460, 760 410 S 1200 360, 1600 420 L1600 450 L0 450 Z" fill="#ade8f4" opacity="0.55"/>
+
+  <text x="70" y="120" font-family="Segoe UI, Arial" font-size="56" font-weight="700" fill="#023e8a">
+    Ving Tàu
+  </text>
+  <text x="70" y="170" font-family="Segoe UI, Arial" font-size="28" fill="#0077b6">
+    ¢nh banner m«u (SVG) cho Ó án
+  </text>
+</svg>
+

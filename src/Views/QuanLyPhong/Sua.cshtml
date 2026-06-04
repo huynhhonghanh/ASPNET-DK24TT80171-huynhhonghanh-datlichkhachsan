@@ -1,0 +1,70 @@
+@model Phong
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Sửa phòng";
+}
+
+<h2 class="fw-bold text-primary mb-4">Sửa phòng #@Model.SoPhong</h2>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <form asp-action="Sua" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="MaPhong" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @if (!string.IsNullOrEmpty(Model.HinhAnh))
+            {
+                <div class="mb-3"><img src="@Model.HinhAnh" alt="" class="rounded" style="max-height:100px;" /></div>
+            }
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="MaKhachSan" class="form-label"></label>
+                    <select asp-for="MaKhachSan" class="form-select" asp-items="ViewBag.KhachSans"></select>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="MaLoaiPhong" class="form-label"></label>
+                    <select asp-for="MaLoaiPhong" class="form-select" asp-items="ViewBag.LoaiPhongs"></select>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="SoPhong" class="form-label"></label>
+                    <input asp-for="SoPhong" class="form-control" />
+                    <span asp-validation-for="SoPhong" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="GiaMotDem" class="form-label"></label>
+                    <input asp-for="GiaMotDem" type="number" min="0" step="1000" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="HuongPhong" class="form-label"></label>
+                    <select asp-for="HuongPhong" class="form-select" asp-items="ViewBag.HuongPhongs"></select>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="TrangThai" class="form-label"></label>
+                    <select asp-for="TrangThai" class="form-select" asp-items="ViewBag.TrangThais"></select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Đổi hình ảnh</label>
+                    <input type="file" name="hinhAnh" class="form-control" accept="image/*" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="TienNghi" class="form-label"></label>
+                    <input asp-for="TienNghi" class="form-control" />
+                </div>
+                <div class="col-12">
+                    <label asp-for="MoTa" class="form-label"></label>
+                    <textarea asp-for="MoTa" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

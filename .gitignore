@@ -1,2 +1,34 @@
-# Cursor IDE (ke hoach, cau hinh local — khong day len Git)
+# Cursor IDE
 .cursor/
+
+# .NET (src)
+**/bin/
+**/obj/
+**/.vs/
+*.user
+*.suo
+[Dd]ebug/
+[Rr]elease/
+
+# Database backup (khong day len Git)
+**/backups/
+**/Backup/
+setup/dulieu/*.bak
+setup/dulieu/*.zip
+*.bak
+*.bak.zip
+
+# Secrets
+**/appsettings.json
+**/appsettings.Development.json
+**/appsettings.local.json
+
+# Publish / temp
+publish/
+**/.git-msg-filter.ps1
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

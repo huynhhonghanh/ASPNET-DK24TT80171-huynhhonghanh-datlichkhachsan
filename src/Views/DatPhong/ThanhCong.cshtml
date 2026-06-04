@@ -1,0 +1,72 @@
+@model DatPhongKhachSanVungTau.ViewModels.DatPhongThanhCongViewModel
+@{
+    ViewData["Title"] = "Đặt phòng thành công";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card shadow-sm border-0 text-center">
+            <div class="card-body p-5">
+                <div class="text-success mb-3" style="font-size: 4rem;">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <h2 class="fw-bold text-success mb-2">Đặt phòng thành công!</h2>
+                <p class="text-muted mb-4">
+                    Cảm ơn bạn đã đặt phòng. Đơn đặt đang chờ xác nhận từ khách sạn.
+                </p>
+
+                <div class="text-start bg-light rounded p-4 mb-4">
+                    <div class="row mb-2">
+                        <div class="col-5 text-muted">Mã đặt phòng</div>
+                        <div class="col-7 fw-bold text-primary">#@Model.MaDatPhong</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5 text-muted">Khách sạn</div>
+                        <div class="col-7 fw-semibold">@Model.TenKhachSan</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5 text-muted">Phòng</div>
+                        <div class="col-7">@Model.SoPhong</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5 text-muted">Nhận phòng</div>
+                        <div class="col-7">@Model.NgayNhanPhong.ToString("dd/MM/yyyy")</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5 text-muted">Trả phòng</div>
+                        <div class="col-7">@Model.NgayTraPhong.ToString("dd/MM/yyyy")</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5 text-muted">Số đêm / khách</div>
+                        <div class="col-7">@Model.SoDem đêm · @Model.SoKhach khách</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5 text-muted">Thanh toán</div>
+                        <div class="col-7">@Model.PhuongThucThanhToan</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-5 text-muted">Trạng thái</div>
+                        <div class="col-7"><span class="badge bg-warning text-dark">@Model.TrangThai</span></div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-5 text-muted">Tổng tiền</div>
+                        <div class="col-7 fw-bold text-danger fs-4">@TienTeHelper.DinhDangVnd(Model.TongTien)</div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 justify-content-center flex-wrap">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">
+                        <i class="bi bi-house me-1"></i> Trang chủ
+                    </a>
+                    <a asp-controller="DatPhong" asp-action="LichSu" class="btn btn-bien">
+                        <i class="bi bi-clock-history me-1"></i> Lịch sử đặt phòng
+                    </a>
+                </div>
+                <p class="small text-muted mt-3 mb-0">
+                    Ngày đặt: @Model.NgayDat.ToString("dd/MM/yyyy HH:mm")
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

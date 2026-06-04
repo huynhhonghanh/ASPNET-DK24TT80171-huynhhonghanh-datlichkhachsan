@@ -1,0 +1,83 @@
+@model IEnumerable<DatPhong>
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Quản lý đặt phòng";
+    var loc = ViewBag.LocTrangThai as string;
+
+    string CssTrangThai(string tt) => tt switch
+    {
+        HangSo.TrangThaiDatChoXacNhan => "bg-warning text-dark",
+        HangSo.TrangThaiDatDaXacNhan => "bg-primary",
+        HangSo.TrangThaiDatDaNhanPhong => "bg-info text-dark",
+        HangSo.TrangThaiDatDaTraPhong => "bg-success",
+        HangSo.TrangThaiDatDaHuy => "bg-secondary",
+        _ => "bg-light text-dark"
+    };
+}
+
+<h2 class="fw-bold text-primary mb-4"><i class="bi bi-calendar-check me-2"></i>Đặt phòng</h2>
+
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-body py-3">
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+            <span class="fw-semibold small">Lọc:</span>
+            <a href="/Admin/QuanLyDatPhong" class="btn btn-sm @(string.IsNullOrEmpty(loc) ? "btn-primary" : "btn-outline-secondary")">Tất cả</a>
+            <a href="/Admin/QuanLyDatPhong?trangThai=@HangSo.TrangThaiDatChoXacNhan"
+               class="btn btn-sm @(loc == HangSo.TrangThaiDatChoXacNhan ? "btn-primary" : "btn-outline-secondary")">Chờ xác nhận</a>
+            <a href="/Admin/QuanLyDatPhong?trangThai=@HangSo.TrangThaiDatDaXacNhan"
+               class="btn btn-sm @(loc == HangSo.TrangThaiDatDaXacNhan ? "btn-primary" : "btn-outline-secondary")">Đã xác nhận</a>
+            <a href="/Admin/QuanLyDatPhong?trangThai=@HangSo.TrangThaiDatDaHuy"
+               class="btn btn-sm @(loc == HangSo.TrangThaiDatDaHuy ? "btn-primary" : "btn-outline-secondary")">Đã hủy</a>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle small">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Khách</th>
+                    <th>Phòng / KS</th>
+                    <th>Nhận – Trả</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var d in Model)
+            {
+                <tr>
+                    <td>@d.MaDatPhong</td>
+                    <td>
+                        <div class="fw-semibold">@d.NguoiDung?.HoTen</div>
+                        <div class="text-muted">@d.NguoiDung?.TenDangNhap</div>
+                    </td>
+                    <td>
+                        <div>@d.Phong?.SoPhong</div>
+                        <div class="text-muted">@d.Phong?.KhachSan?.TenKhachSan</div>
+                    </td>
+                    <td>
+                        @d.NgayNhanPhong.ToString("dd/MM/yyyy") – @d.NgayTraPhong.ToString("dd/MM/yyyy")
+                        <div class="text-muted">@d.SoDem đêm · @d.SoKhach khách</div>
+                    </td>
+                    <td>@TienTeHelper.DinhDangVnd(d.TongTien)</td>
+                    <td><span class="badge @CssTrangThai(d.TrangThai)">@d.TrangThai</span></td>
+                    <td class="text-end text-nowrap">
+                        <a asp-action="ChiTiet" asp-route-id="@d.MaDatPhong" class="btn btn-sm btn-outline-primary">Chi tiết</a>
+                        @if (d.TrangThai == HangSo.TrangThaiDatChoXacNhan)
+                        {
+                            <form asp-action="XacNhan" asp-route-id="@d.MaDatPhong" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-success">Xác nhận</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

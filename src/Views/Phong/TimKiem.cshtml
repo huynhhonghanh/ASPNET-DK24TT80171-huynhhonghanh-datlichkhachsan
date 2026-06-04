@@ -1,0 +1,252 @@
+@model DatPhongKhachSanVungTau.ViewModels.TimKiemPhongViewModel
+@using DatPhongKhachSanVungTau.Models
+@{
+    ViewData["Title"] = "Tìm phòng";
+    var giaTuHienThi = Model.GiaTu ?? Model.GiaMinHeThong;
+    var giaDenHienThi = Model.GiaDen ?? Model.GiaMaxHeThong;
+}
+
+<div class="mb-4">
+    <h2 class="fw-bold text-primary">
+        <i class="bi bi-search me-2"></i>Tìm phòng trống
+    </h2>
+    <p class="text-muted mb-0">
+        Lọc theo bãi biển, giá, loại phòng, xếp hạng sao, hướng phòng và ngày lưu trú.
+    </p>
+</div>
+
+@if (TempData["Loi"] != null)
+{
+    <div class="alert alert-danger">@TempData["Loi"]</div>
+}
+
+<!-- Bộ lọc -->
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-white fw-semibold">
+        <i class="bi bi-funnel me-1 text-primary"></i> Bộ lọc tìm kiếm
+    </div>
+    <div class="card-body p-4">
+        <form asp-action="TimKiem" method="get">
+            <input type="hidden" name="timKiem" value="true" />
+
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Khu vực bãi biển</label>
+                    <select name="khuVuc" class="form-select">
+                        <option value="">Tất cả bãi biển</option>
+                        @foreach (var kv in HangSo.DanhSachKhuVuc)
+                        {
+                            if (Model.KhuVuc == kv)
+                            {
+                                <option value="@kv" selected>@kv</option>
+                            }
+                            else
+                            {
+                                <option value="@kv">@kv</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Nhận phòng</label>
+                    <input type="date" name="ngayNhan" class="form-control"
+                           value="@Model.NgayNhanPhong.ToString("yyyy-MM-dd")"
+                           min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Trả phòng</label>
+                    <input type="date" name="ngayTra" class="form-control"
+                           value="@Model.NgayTraPhong.ToString("yyyy-MM-dd")" required />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Số khách</label>
+                    <input type="number" name="soKhach" class="form-control" min="1" max="20"
+                           value="@Model.SoKhach" required />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Loại phòng</label>
+                    <select name="maLoaiPhong" class="form-select">
+                        <option value="">Tất cả loại phòng</option>
+                        @foreach (var lp in Model.DanhSachLoaiPhong)
+                        {
+                            if (Model.MaLoaiPhong == lp.MaLoaiPhong)
+                            {
+                                <option value="@lp.MaLoaiPhong" selected>@lp.TenLoaiPhong</option>
+                            }
+                            else
+                            {
+                                <option value="@lp.MaLoaiPhong">@lp.TenLoaiPhong</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Xếp hạng sao</label>
+                    <select name="xepHang" class="form-select">
+                        <option value="">Tất cả</option>
+                        @foreach (var sao in new[] { 5, 4, 3 })
+                        {
+                            if (Model.XepHang == sao)
+                            {
+                                <option value="@sao" selected>@sao sao</option>
+                            }
+                            else
+                            {
+                                <option value="@sao">@sao sao</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Hướng phòng</label>
+                    <select name="huongPhong" class="form-select">
+                        <option value="">Tất cả hướng</option>
+                        @foreach (var hp in Model.DanhSachHuongPhong)
+                        {
+                            if (Model.HuongPhong == hp)
+                            {
+                                <option value="@hp" selected>@hp</option>
+                            }
+                            else
+                            {
+                                <option value="@hp">@hp</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-7">
+                    <label class="form-label fw-semibold">
+                        Khoảng giá (VNĐ/đêm):
+                        <span id="lblGiaTu" class="text-danger">@TienTeHelper.DinhDangVnd(giaTuHienThi)</span>
+                        —
+                        <span id="lblGiaDen" class="text-danger">@TienTeHelper.DinhDangVnd(giaDenHienThi)</span>
+                    </label>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <input type="range" class="form-range" id="sliderGiaTu" name="giaTu"
+                                   min="@((int)Model.GiaMinHeThong)" max="@((int)Model.GiaMaxHeThong)"
+                                   step="100000" value="@((int)giaTuHienThi)" />
+                            <small class="text-muted">Giá từ</small>
+                        </div>
+                        <div class="col-6">
+                            <input type="range" class="form-range" id="sliderGiaDen" name="giaDen"
+                                   min="@((int)Model.GiaMinHeThong)" max="@((int)Model.GiaMaxHeThong)"
+                                   step="100000" value="@((int)giaDenHienThi)" />
+                            <small class="text-muted">Giá đến</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-bien w-100 py-2">
+                        <i class="bi bi-search me-1"></i> Tìm phòng trống
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Kết quả -->
+@if (Model.DaTimKiem)
+{
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">
+            Tìm thấy <span class="text-primary fw-bold">@Model.TongSoKetQua</span> phòng trống
+            <span class="text-muted small">
+                (@Model.NgayNhanPhong.ToString("dd/MM/yyyy") → @Model.NgayTraPhong.ToString("dd/MM/yyyy"),
+                @Model.SoKhach khách)
+            </span>
+        </h5>
+    </div>
+
+    @if (!Model.KetQua.Any())
+    {
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            Không có phòng trống phù hợp. Hãy thử đổi ngày, khu vực hoặc nới rộng khoảng giá.
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var p in Model.KetQua)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card card-phong-tim-kiem h-100 shadow-sm border-0">
+                        <div class="card-phong-tim-kiem__anh">
+                            <img src="@(p.HinhAnh ?? "/images/phong/phong-mau.svg")" alt="@p.SoPhong" />
+                            <span class="badge bg-success">Còn trống</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <h6 class="fw-bold mb-0">@p.TenKhachSan</h6>
+                                <span class="badge bg-warning text-dark">
+                                    @for (var i = 0; i < p.XepHang; i++) { <i class="bi bi-star-fill"></i> }
+                                </span>
+                            </div>
+                            <p class="small text-muted mb-2">
+                                <i class="bi bi-geo-alt text-primary"></i> @p.KhuVuc · Phòng @p.SoPhong
+                            </p>
+                            <p class="small mb-1">
+                                <span class="badge bg-light text-dark border">@p.TenLoaiPhong</span>
+                                <span class="badge bg-light text-dark border">@p.HuongPhong</span>
+                                <span class="badge bg-light text-dark border">Tối đa @p.SoNguoiToiDa khách</span>
+                            </p>
+                            @if (!string.IsNullOrEmpty(p.TienNghi))
+                            {
+                                <p class="small text-muted text-truncate mb-2" title="@p.TienNghi">
+                                    <i class="bi bi-check2-circle text-success"></i> @p.TienNghi
+                                </p>
+                            }
+                            <div class="d-flex justify-content-between align-items-end mt-2">
+                                <div>
+                                    <div class="small text-muted">@p.SoDem đêm · Tổng</div>
+                                    <div class="fw-bold text-danger fs-5">@TienTeHelper.DinhDangVnd(p.TongTien)</div>
+                                    <div class="small text-muted">@TienTeHelper.DinhDangVnd(p.GiaMotDem) / đêm</div>
+                                </div>
+                                <a asp-action="ChiTiet" asp-route-id="@p.MaPhong"
+                                   asp-route-ngayNhan="@Model.NgayNhanPhong.ToString("yyyy-MM-dd")"
+                                   asp-route-ngayTra="@Model.NgayTraPhong.ToString("yyyy-MM-dd")"
+                                   asp-route-soKhach="@Model.SoKhach"
+                                   class="btn btn-bien btn-sm">
+                                    Chi tiết
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
+
+@section Scripts {
+    <script>
+        (function () {
+            const sliderTu = document.getElementById('sliderGiaTu');
+            const sliderDen = document.getElementById('sliderGiaDen');
+            const lblTu = document.getElementById('lblGiaTu');
+            const lblDen = document.getElementById('lblGiaDen');
+
+            function dinhDangVnd(n) {
+                return new Intl.NumberFormat('vi-VN').format(n) + ' ₫';
+            }
+
+            function capNhat() {
+                if (!sliderTu || !sliderDen) return;
+                let tu = parseInt(sliderTu.value, 10);
+                let den = parseInt(sliderDen.value, 10);
+                if (tu > den) { const t = tu; tu = den; den = t; sliderTu.value = tu; sliderDen.value = den; }
+                lblTu.textContent = dinhDangVnd(tu);
+                lblDen.textContent = dinhDangVnd(den);
+            }
+
+            sliderTu?.addEventListener('input', capNhat);
+            sliderDen?.addEventListener('input', capNhat);
+            capNhat();
+        })();
+    </script>
+}

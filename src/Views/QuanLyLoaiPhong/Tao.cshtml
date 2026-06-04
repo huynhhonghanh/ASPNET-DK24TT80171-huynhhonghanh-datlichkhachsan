@@ -1,0 +1,36 @@
+@model LoaiPhong
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Thêm loại phòng";
+}
+
+<h2 class="fw-bold text-primary mb-4">Thêm loại phòng</h2>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <form asp-action="Tao" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="TenLoaiPhong" class="form-label"></label>
+                <input asp-for="TenLoaiPhong" class="form-control" />
+                <span asp-validation-for="TenLoaiPhong" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SoNguoiToiDa" class="form-label"></label>
+                <input asp-for="SoNguoiToiDa" type="number" min="1" max="20" class="form-control" />
+                <span asp-validation-for="SoNguoiToiDa" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="MoTa" class="form-label"></label>
+                <textarea asp-for="MoTa" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

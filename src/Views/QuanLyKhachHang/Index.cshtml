@@ -1,0 +1,63 @@
+@model IEnumerable<NguoiDung>
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Quản lý khách hàng";
+}
+
+<h2 class="fw-bold text-primary mb-4"><i class="bi bi-people me-2"></i>Khách hàng</h2>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Họ tên</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Email</th>
+                    <th>SĐT</th>
+                    <th>Trạng thái</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var kh in Model)
+            {
+                var biKhoa = kh.TrangThaiTaiKhoan == HangSo.TrangThaiTaiKhoanBiKhoa;
+                <tr class="@(biKhoa ? "table-secondary" : "")">
+                    <td class="fw-semibold">@kh.HoTen</td>
+                    <td>@kh.TenDangNhap</td>
+                    <td>@kh.Email</td>
+                    <td>@(kh.SoDienThoai ?? "—")</td>
+                    <td>
+                        @if (biKhoa)
+                        {
+                            <span class="badge bg-danger">Đã khóa</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Hoạt động</span>
+                        }
+                    </td>
+                    <td class="text-end">
+                        @if (biKhoa)
+                        {
+                            <form asp-action="MoKhoaTaiKhoan" asp-route-id="@kh.MaNguoiDung" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-success">Mở khóa</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="KhoaTaiKhoan" asp-route-id="@kh.MaNguoiDung" method="post" class="d-inline"
+                                  onsubmit="return confirm('Khóa tài khoản @kh.TenDangNhap?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Khóa</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

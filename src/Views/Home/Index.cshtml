@@ -1,0 +1,195 @@
+﻿@model DatPhongKhachSanVungTau.ViewModels.TrangChuViewModel
+@using DatPhongKhachSanVungTau.Helpers
+@using DatPhongKhachSanVungTau.Models
+@{
+    ViewData["Title"] = "Trang chủ";
+    var timKiem = Model.TimKiem;
+}
+
+<!-- Banner + tìm kiếm nhanh -->
+<section class="hero-bien hero-bien--trangchu mb-4">
+    <div class="hero-bien__noi-dung w-100">
+        <h1 class="display-5 mb-2">Khám phá thiên đường biển Vũng Tàu</h1>
+        <p class="tagline mb-4">Đặt phòng dễ dàng — Bãi Trước · Bãi Sau · Bãi Dâu · Bãi Dứa · Bãi Vọng Nguyệt</p>
+
+        <div class="card tim-kiem-nhanh shadow-lg border-0 mx-auto">
+            <div class="card-body p-4">
+                <form asp-controller="Phong" asp-action="TimKiem" method="get" class="row g-3 align-items-end">
+                    <input type="hidden" name="timKiem" value="true" />
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold text-dark">
+                            <i class="bi bi-geo-alt text-primary me-1"></i> Khu vực bãi biển
+                        </label>
+                        <select name="khuVuc" class="form-select">
+                            <option value="">Tất cả bãi biển</option>
+                            @foreach (var kv in HangSo.DanhSachKhuVuc)
+                            {
+                                if (timKiem.KhuVuc == kv)
+                                {
+                                    <option value="@kv" selected>@kv</option>
+                                }
+                                else
+                                {
+                                    <option value="@kv">@kv</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold text-dark">
+                            <i class="bi bi-calendar-check text-primary me-1"></i> Nhận phòng
+                        </label>
+                        <input type="date" name="ngayNhan" class="form-control"
+                               value="@timKiem.NgayNhanPhong.ToString("yyyy-MM-dd")"
+                               min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold text-dark">
+                            <i class="bi bi-calendar-x text-primary me-1"></i> Trả phòng
+                        </label>
+                        <input type="date" name="ngayTra" class="form-control"
+                               value="@timKiem.NgayTraPhong.ToString("yyyy-MM-dd")"
+                               min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" required />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold text-dark">
+                            <i class="bi bi-people text-primary me-1"></i> Số khách
+                        </label>
+                        <input type="number" name="soKhach" class="form-control" min="1" max="20"
+                               value="@timKiem.SoKhach" required />
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-bien w-100 py-2">
+                            <i class="bi bi-search me-1"></i> Tìm phòng trống
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Giới thiệu Vũng Tàu -->
+<section class="gioi-thieu-vt mb-5">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+            <h2 class="fw-bold text-primary mb-3">
+                <i class="bi bi-sun me-2"></i>Vũng Tàu — điểm đến biển gần Sài Gòn
+            </h2>
+            <p class="text-muted mb-3">
+                Cách TP. Hồ Chí Minh khoảng 2 giờ di chuyển, Vũng Tàu nổi tiếng với bãi biển trong xanh,
+                hải sản tươi ngon và những cung đường ven biển lãng mạn. Du khách có thể tham quan
+                Tượng Chúa Kitô Vũng Tào, Hải đăng, Bạch Dinh hay thả mình tại các bãi tắm nổi tiếng.
+            </p>
+            <p class="text-muted mb-4">
+                Hệ thống <strong>Vũng Tàu Booking</strong> giúp bạn tìm và đặt phòng khách sạn ven biển
+                theo khu vực, ngày lưu trú và số khách — nhanh chóng, minh bạch giá phòng.
+            </p>
+            <div class="d-flex flex-wrap gap-2">
+                @foreach (var kv in HangSo.DanhSachKhuVuc)
+                {
+                    <a asp-controller="Phong" asp-action="TimKiem"
+                       asp-route-khuVuc="@kv"
+                       asp-route-ngayNhan="@timKiem.NgayNhanPhong.ToString("yyyy-MM-dd")"
+                       asp-route-ngayTra="@timKiem.NgayTraPhong.ToString("yyyy-MM-dd")"
+                       asp-route-soKhach="@timKiem.SoKhach"
+                       class="badge badge-khu-vuc rounded-pill text-decoration-none px-3 py-2">
+                        <i class="bi bi-water me-1 text-primary"></i>@kv
+                    </a>
+                }
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="row g-3">
+                <div class="col-6">
+                    <div class="thong-ke-vt p-3 text-center">
+                        <div class="fs-2 fw-bold text-primary">6+</div>
+                        <div class="small text-muted">Khách sạn ven biển</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="thong-ke-vt p-3 text-center">
+                        <div class="fs-2 fw-bold text-primary">5</div>
+                        <div class="small text-muted">Bãi biển nổi tiếng</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="thong-ke-vt p-3 text-center">
+                        <div class="fs-2 fw-bold text-primary">25+</div>
+                        <div class="small text-muted">Phòng đa dạng</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="thong-ke-vt p-3 text-center">
+                        <div class="fs-2 fw-bold text-primary">24/7</div>
+                        <div class="small text-muted">Đặt phòng online</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Khách sạn nổi bật -->
+<section class="mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary mb-0">
+            <i class="bi bi-building me-2"></i>Khách sạn nổi bật
+        </h2>
+        <a asp-controller="Phong" asp-action="TimKiem" class="btn btn-outline-primary btn-sm">
+            Xem tất cả <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+    </div>
+
+    @if (!Model.KhachSanNoiBat.Any())
+    {
+        <div class="alert alert-warning">Chưa có khách sạn trong hệ thống.</div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var ks in Model.KhachSanNoiBat)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card card-khach-san h-100 shadow-sm border-0">
+                        <div class="card-khach-san__anh">
+                            <img src="@(ks.HinhAnh ?? "/images/khachsan/pullman.svg")" alt="@ks.TenKhachSan" />
+                            <span class="badge bg-primary card-khach-san__sao">
+                                @for (var i = 0; i < ks.XepHang; i++)
+                                {
+                                    <i class="bi bi-star-fill"></i>
+                                }
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold mb-1">@ks.TenKhachSan</h5>
+                            <p class="text-muted small mb-2">
+                                <i class="bi bi-geo-alt-fill text-primary me-1"></i>@ks.KhuVuc
+                                <span class="mx-1">·</span>
+                                <i class="bi bi-signpost-2 me-1"></i>@ks.KhoangCachBien m đến biển
+                            </p>
+                            <p class="small text-muted mb-3">
+                                <i class="bi bi-door-open me-1"></i>@ks.SoPhong phòng còn trống
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="small text-muted">Giá từ</span>
+                                    <div class="fw-bold text-danger fs-5">@TienTeHelper.DinhDangVnd(ks.GiaTu)</div>
+                                    <span class="small text-muted">/ đêm</span>
+                                </div>
+                                <a asp-controller="Phong" asp-action="TimKiem"
+                                   asp-route-khuVuc="@ks.KhuVuc"
+                                   asp-route-ngayNhan="@timKiem.NgayNhanPhong.ToString("yyyy-MM-dd")"
+                                   asp-route-ngayTra="@timKiem.NgayTraPhong.ToString("yyyy-MM-dd")"
+                                   asp-route-soKhach="@timKiem.SoKhach"
+                                   class="btn btn-bien btn-sm">
+                                    Xem phòng
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</section>

@@ -1,0 +1,84 @@
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2 class="fw-bold text-primary mb-4"><i class="bi bi-speedometer2 me-2"></i>Dashboard</h2>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-muted small">Khách hàng</div>
+                <div class="fs-3 fw-bold text-primary">@ViewBag.TongKhachHang</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-muted small">Khách sạn</div>
+                <div class="fs-3 fw-bold text-primary">@ViewBag.TongKhachSan</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-muted small">Phòng</div>
+                <div class="fs-3 fw-bold text-primary">@ViewBag.TongPhong</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-muted small">Đặt phòng</div>
+                <div class="fs-3 fw-bold text-primary">@ViewBag.TongDatPhong</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-muted small">Chờ xác nhận</div>
+                <div class="fs-3 fw-bold text-warning">@ViewBag.ChoXacNhan</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center">
+                <div class="text-muted small">Doanh thu tháng</div>
+                <div class="fs-6 fw-bold text-success">@TienTeHelper.DinhDangVnd((decimal)ViewBag.DoanhThuThang)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">Thao tác nhanh</div>
+            <div class="card-body d-flex flex-wrap gap-2">
+                <a href="/Admin/QuanLyDatPhong" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-calendar-check"></i> Quản lý đặt phòng
+                </a>
+                <a href="/Admin/QuanLyKhachSan/Tao" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-building-add"></i> Thêm khách sạn
+                </a>
+                <a href="/Admin/QuanLyPhong/Tao" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-key"></i> Thêm phòng
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">Ghi chú</div>
+            <div class="card-body text-muted small mb-0">
+                Biểu đồ thống kê Chart.js sẽ được bổ sung ở <strong>Bước 11</strong>.
+            </div>
+        </div>
+    </div>
+</div>

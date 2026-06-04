@@ -1,0 +1,233 @@
+/* Theme biển Vũng Tàu */
+:root {
+  --mau-bien-chinh: #0077b6;
+  --mau-bien-dam: #023e8a;
+  --mau-bien-nhat: #90e0ef;
+  --mau-cat: #f4e4bc;
+  --mau-trang: #ffffff;
+  --mau-nen: #f8fbff;
+}
+
+html {
+  font-size: 14px;
+  position: relative;
+  min-height: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin-bottom: 80px;
+  background-color: var(--mau-nen);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar chủ đề biển */
+.navbar-bien {
+  background: linear-gradient(135deg, var(--mau-bien-dam) 0%, var(--mau-bien-chinh) 100%) !important;
+  box-shadow: 0 2px 12px rgba(0, 119, 182, 0.35);
+}
+
+.navbar-bien .navbar-brand,
+.navbar-bien .nav-link {
+  color: var(--mau-trang) !important;
+}
+
+.navbar-bien .nav-link:hover {
+  color: var(--mau-bien-nhat) !important;
+}
+
+.navbar-bien .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.navbar-bien .navbar-toggler-icon {
+  filter: invert(1);
+}
+
+/* Footer */
+.footer-bien {
+  background: linear-gradient(135deg, var(--mau-bien-dam) 0%, var(--mau-bien-chinh) 100%);
+  color: var(--mau-trang);
+  padding: 1rem 0;
+}
+
+.footer-bien a {
+  color: var(--mau-bien-nhat);
+  text-decoration: none;
+}
+
+.footer-bien a:hover {
+  color: var(--mau-trang);
+}
+
+/* Nút chính */
+.btn-bien {
+  background-color: var(--mau-bien-chinh);
+  border-color: var(--mau-bien-chinh);
+  color: var(--mau-trang);
+}
+
+.btn-bien:hover {
+  background-color: var(--mau-bien-dam);
+  border-color: var(--mau-bien-dam);
+  color: var(--mau-trang);
+}
+
+/* Hero trang chủ */
+.hero-bien {
+  background: linear-gradient(rgba(2, 62, 138, 0.72), rgba(0, 119, 182, 0.62)),
+    url("/images/banner/vung-tau.svg") center/cover no-repeat;
+  background-color: var(--mau-bien-chinh);
+  min-height: 320px;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mau-trang);
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+}
+
+.hero-bien--trangchu {
+  min-height: 420px;
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+}
+
+.hero-bien__noi-dung {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.hero-bien h1 {
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hero-bien .tagline {
+  font-size: 1.15rem;
+  opacity: 0.95;
+}
+
+/* Ô tìm kiếm nhanh trên banner */
+.tim-kiem-nhanh {
+  max-width: 1000px;
+  text-align: left;
+  border-radius: 1rem !important;
+}
+
+.tim-kiem-nhanh .form-label {
+  font-size: 0.85rem;
+}
+
+/* Giới thiệu Vũng Tàu */
+.gioi-thieu-vt {
+  background: var(--mau-trang);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 119, 182, 0.08);
+}
+
+/* Bootstrap 5.0: .badge mặc định chữ trắng — badge nền sáng cần màu chữ tối */
+.badge.bg-light,
+.badge.badge-khu-vuc {
+  color: var(--mau-bien-dam) !important;
+  background-color: var(--mau-nen) !important;
+  border: 1px solid rgba(0, 119, 182, 0.25);
+  font-weight: 600;
+}
+
+a.badge.badge-khu-vuc:hover {
+  background-color: var(--mau-bien-chinh) !important;
+  color: var(--mau-trang) !important;
+  border-color: var(--mau-bien-chinh);
+}
+
+.thong-ke-vt {
+  background: var(--mau-nen);
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0, 119, 182, 0.12);
+}
+
+/* Card khách sạn nổi bật */
+.card-khach-san {
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-khach-san:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(2, 62, 138, 0.15) !important;
+}
+
+.card-khach-san__anh {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  background: var(--mau-bien-nhat);
+}
+
+.card-khach-san__anh img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-khach-san__sao {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 0.75rem;
+}
+
+/* Card phòng kết quả tìm kiếm */
+.card-phong-tim-kiem {
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-phong-tim-kiem:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(2, 62, 138, 0.12) !important;
+}
+
+.card-phong-tim-kiem__anh {
+  position: relative;
+  height: 160px;
+  overflow: hidden;
+  background: var(--mau-bien-nhat);
+}
+
+.card-phong-tim-kiem__anh img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-phong-tim-kiem__anh .badge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+
+/* Lịch sử đặt phòng */
+.card-lich-su {
+  transition: box-shadow 0.2s ease;
+}
+
+.card-lich-su:hover {
+  box-shadow: 0 8px 20px rgba(2, 62, 138, 0.1) !important;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--mau-bien-nhat);
+}

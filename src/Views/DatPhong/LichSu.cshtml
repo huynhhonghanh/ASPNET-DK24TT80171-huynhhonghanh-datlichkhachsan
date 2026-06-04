@@ -1,0 +1,134 @@
+@model DatPhongKhachSanVungTau.ViewModels.LichSuDatPhongViewModel
+@using DatPhongKhachSanVungTau.Models
+@{
+    ViewData["Title"] = "Lịch sử đặt phòng";
+
+    string CssTrangThai(string tt) => tt switch
+    {
+        HangSo.TrangThaiDatChoXacNhan => "bg-warning text-dark",
+        HangSo.TrangThaiDatDaXacNhan => "bg-primary",
+        HangSo.TrangThaiDatDaNhanPhong => "bg-info text-dark",
+        HangSo.TrangThaiDatDaTraPhong => "bg-success",
+        HangSo.TrangThaiDatDaHuy => "bg-secondary",
+        _ => "bg-light text-dark"
+    };
+}
+
+<div class="mb-4">
+    <h2 class="fw-bold text-primary">
+        <i class="bi bi-clock-history me-2"></i>Lịch sử đặt phòng
+    </h2>
+    <p class="text-muted mb-0">Xem và quản lý các đơn đặt phòng của bạn.</p>
+</div>
+
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success">@TempData["ThongBao"]</div>
+}
+@if (TempData["Loi"] != null)
+{
+    <div class="alert alert-danger">@TempData["Loi"]</div>
+}
+
+<!-- Lọc trạng thái -->
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body py-3">
+        <form asp-action="LichSu" method="get" class="d-flex flex-wrap gap-2 align-items-center">
+            <span class="fw-semibold me-2">Lọc:</span>
+            <a asp-action="LichSu" class="btn btn-sm @(string.IsNullOrEmpty(Model.LocTrangThai) ? "btn-bien" : "btn-outline-secondary")">Tất cả</a>
+            <a asp-action="LichSu" asp-route-trangThai="@HangSo.TrangThaiDatChoXacNhan"
+               class="btn btn-sm @(Model.LocTrangThai == HangSo.TrangThaiDatChoXacNhan ? "btn-bien" : "btn-outline-secondary")">Chờ xác nhận</a>
+            <a asp-action="LichSu" asp-route-trangThai="@HangSo.TrangThaiDatDaXacNhan"
+               class="btn btn-sm @(Model.LocTrangThai == HangSo.TrangThaiDatDaXacNhan ? "btn-bien" : "btn-outline-secondary")">Đã xác nhận</a>
+            <a asp-action="LichSu" asp-route-trangThai="@HangSo.TrangThaiDatDaNhanPhong"
+               class="btn btn-sm @(Model.LocTrangThai == HangSo.TrangThaiDatDaNhanPhong ? "btn-bien" : "btn-outline-secondary")">Đã nhận phòng</a>
+            <a asp-action="LichSu" asp-route-trangThai="@HangSo.TrangThaiDatDaTraPhong"
+               class="btn btn-sm @(Model.LocTrangThai == HangSo.TrangThaiDatDaTraPhong ? "btn-bien" : "btn-outline-secondary")">Đã trả phòng</a>
+            <a asp-action="LichSu" asp-route-trangThai="@HangSo.TrangThaiDatDaHuy"
+               class="btn btn-sm @(Model.LocTrangThai == HangSo.TrangThaiDatDaHuy ? "btn-bien" : "btn-outline-secondary")">Đã hủy</a>
+        </form>
+    </div>
+</div>
+
+@if (!Model.DanhSach.Any())
+{
+    <div class="alert alert-info text-center py-5">
+        <i class="bi bi-inbox display-4 d-block mb-3 text-muted"></i>
+        <div class="fw-bold mb-2">Chưa có đặt phòng nào</div>
+        <a asp-controller="Phong" asp-action="TimKiem" asp-route-timKiem="true" class="btn btn-bien">
+            <i class="bi bi-search me-1"></i> Tìm phòng ngay
+        </a>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var dp in Model.DanhSach)
+        {
+            <div class="col-12">
+                <div class="card shadow-sm border-0 card-lich-su">
+                    <div class="card-body">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-2 col-lg-2 d-none d-md-block">
+                                <img src="@(dp.HinhAnh ?? "/images/phong/phong-mau.svg")" alt="@dp.SoPhong"
+                                     class="rounded" style="width:100%;height:90px;object-fit:cover;" />
+                            </div>
+                            <div class="col-md-7">
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <span class="fw-bold text-primary">#@dp.MaDatPhong</span>
+                                    <span class="badge @CssTrangThai(dp.TrangThai)">@dp.TrangThai</span>
+                                </div>
+                                <h5 class="fw-bold mb-1">@dp.TenKhachSan</h5>
+                                <p class="text-muted small mb-2">
+                                    <i class="bi bi-geo-alt"></i> @dp.KhuVuc · Phòng <b>@dp.SoPhong</b>
+                                </p>
+                                <div class="row small">
+                                    <div class="col-sm-6">
+                                        <i class="bi bi-calendar-check text-primary"></i>
+                                        Nhận: <b>@dp.NgayNhanPhong.ToString("dd/MM/yyyy")</b>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <i class="bi bi-calendar-x text-primary"></i>
+                                        Trả: <b>@dp.NgayTraPhong.ToString("dd/MM/yyyy")</b>
+                                    </div>
+                                    <div class="col-sm-6 mt-1">
+                                        <i class="bi bi-moon"></i> @dp.SoDem đêm · @dp.SoKhach khách
+                                    </div>
+                                    <div class="col-sm-6 mt-1">
+                                        <i class="bi bi-credit-card"></i> @dp.PhuongThucThanhToan
+                                    </div>
+                                </div>
+                                <div class="small text-muted mt-1">
+                                    Đặt lúc: @dp.NgayDat.ToString("dd/MM/yyyy HH:mm")
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-md-end">
+                                <div class="fw-bold text-danger fs-5 mb-2">@TienTeHelper.DinhDangVnd(dp.TongTien)</div>
+                                @if (dp.CoTheHuy)
+                                {
+                                    <form asp-action="Huy" asp-route-id="@dp.MaDatPhong" method="post"
+                                          onsubmit="return confirm('Bạn có chắc muốn hủy đặt phòng #@dp.MaDatPhong?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-danger btn-sm w-100">
+                                            <i class="bi bi-x-circle me-1"></i> Hủy đặt phòng
+                                        </button>
+                                    </form>
+                                }
+                                else if (dp.TrangThai == HangSo.TrangThaiDatDaHuy)
+                                {
+                                    <span class="text-muted small"><i class="bi bi-slash-circle"></i> Đã hủy</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">
+                                        <i class="bi bi-info-circle"></i> Không thể hủy
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

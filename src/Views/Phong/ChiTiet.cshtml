@@ -1,0 +1,194 @@
+@model DatPhongKhachSanVungTau.ViewModels.ChiTietPhongViewModel
+@using DatPhongKhachSanVungTau.Models
+@{
+    ViewData["Title"] = "Chi tiết phòng";
+    var phong = Model.Phong;
+    var form = Model.FormDatPhong;
+}
+
+<div class="mb-3">
+    <a asp-action="TimKiem"
+       asp-route-khuVuc="@phong.KhachSan?.KhuVuc"
+       asp-route-ngayNhan="@form.NgayNhanPhong.ToString("yyyy-MM-dd")"
+       asp-route-ngayTra="@form.NgayTraPhong.ToString("yyyy-MM-dd")"
+       asp-route-soKhach="@form.SoKhach"
+       asp-route-timKiem="true"
+       class="text-decoration-none">
+        <i class="bi bi-arrow-left"></i> Quay lại tìm kiếm
+    </a>
+</div>
+
+@if (TempData["Loi"] != null)
+{
+    <div class="alert alert-danger">@TempData["Loi"]</div>
+}
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <img src="@(phong.HinhAnh ?? "/images/phong/phong-mau.svg")"
+             class="img-fluid rounded shadow-sm w-100 mb-3" alt="Phòng @phong.SoPhong"
+             style="max-height:380px;object-fit:cover;" />
+
+        <h2 class="fw-bold text-primary">Phòng @phong.SoPhong</h2>
+        <h5 class="text-muted">@phong.KhachSan?.TenKhachSan</h5>
+        <p>
+            <i class="bi bi-geo-alt text-primary"></i> @phong.KhachSan?.KhuVuc ·
+            @phong.KhachSan?.KhoangCachBien m đến biển ·
+            @for (var i = 0; i < (phong.KhachSan?.XepHang ?? 0); i++) { <i class="bi bi-star-fill text-warning"></i> }
+        </p>
+
+        @if (Model.ConTrong)
+        {
+            <span class="badge bg-success mb-3">Còn trống</span>
+        }
+        else
+        {
+            <span class="badge bg-danger mb-3">Không còn trống / đang bảo trì</span>
+        }
+
+        <ul class="list-unstyled mb-3">
+            <li><b>Loại phòng:</b> @phong.LoaiPhong?.TenLoaiPhong (tối đa @phong.LoaiPhong?.SoNguoiToiDa khách)</li>
+            <li><b>Hướng:</b> @phong.HuongPhong</li>
+            <li><b>Tiện nghi:</b> @(phong.TienNghi ?? "—")</li>
+        </ul>
+
+        @if (!string.IsNullOrEmpty(phong.MoTa))
+        {
+            <h5 class="fw-bold">Mô tả</h5>
+            <p class="text-muted">@phong.MoTa</p>
+        }
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card shadow-sm border-0 sticky-top" style="top: 1rem;">
+            <div class="card-header bg-white fw-bold">
+                <i class="bi bi-calendar-check text-primary me-1"></i> Đặt phòng online
+            </div>
+            <div class="card-body p-4">
+                @if (!Model.DaDangNhap)
+                {
+                    <div class="alert alert-warning small">
+                        Vui lòng <a asp-controller="TaiKhoan" asp-action="DangNhap"
+                                    asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">đăng nhập</a>
+                        để đặt phòng.
+                    </div>
+                }
+
+                @if (Model.ConTrong)
+                {
+                    <form asp-controller="DatPhong" asp-action="XacNhan" method="post" id="formDatPhong">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="FormDatPhong.MaPhong" />
+                        <input type="hidden" id="giaMotDem" value="@phong.GiaMotDem" />
+                        <input type="hidden" id="soNguoiToiDa" value="@(phong.LoaiPhong?.SoNguoiToiDa ?? 1)" />
+
+                        <div class="mb-3">
+                            <label asp-for="FormDatPhong.NgayNhanPhong" class="form-label fw-semibold"></label>
+                            <input asp-for="FormDatPhong.NgayNhanPhong" type="date" class="form-control" id="ngayNhan"
+                                   min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="FormDatPhong.NgayNhanPhong" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="FormDatPhong.NgayTraPhong" class="form-label fw-semibold"></label>
+                            <input asp-for="FormDatPhong.NgayTraPhong" type="date" class="form-control" id="ngayTra" />
+                            <span asp-validation-for="FormDatPhong.NgayTraPhong" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="FormDatPhong.SoKhach" class="form-label fw-semibold"></label>
+                            <input asp-for="FormDatPhong.SoKhach" type="number" class="form-control" id="soKhach"
+                                   min="1" max="@(phong.LoaiPhong?.SoNguoiToiDa ?? 20)" />
+                            <span asp-validation-for="FormDatPhong.SoKhach" class="text-danger small"></span>
+                        </div>
+
+                        <div class="p-3 bg-light rounded mb-3">
+                            <div class="d-flex justify-content-between small text-muted">
+                                <span>Giá / đêm</span>
+                                <span id="txtGiaDem">@TienTeHelper.DinhDangVnd(phong.GiaMotDem)</span>
+                            </div>
+                            <div class="d-flex justify-content-between small text-muted">
+                                <span>Số đêm</span>
+                                <span id="txtSoDem">@form.SoDem</span>
+                            </div>
+                            <hr class="my-2" />
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-semibold">Tổng tiền</span>
+                                <span class="fw-bold text-danger fs-5" id="txtTongTien">@TienTeHelper.DinhDangVnd(form.TongTien)</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FormDatPhong.PhuongThucThanhToan" class="form-label fw-semibold"></label>
+                            <select asp-for="FormDatPhong.PhuongThucThanhToan" class="form-select">
+                                <option value="@HangSo.ThanhToanTienMat">@HangSo.ThanhToanTienMat</option>
+                                <option value="@HangSo.ThanhToanChuyenKhoan">@HangSo.ThanhToanChuyenKhoan</option>
+                                <option value="@HangSo.ThanhToanThe">@HangSo.ThanhToanThe</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="FormDatPhong.GhiChu" class="form-label fw-semibold"></label>
+                            <textarea asp-for="FormDatPhong.GhiChu" class="form-control" rows="2"
+                                      placeholder="Yêu cầu đặc biệt (nếu có)..."></textarea>
+                        </div>
+
+                        @if (Model.DaDangNhap)
+                        {
+                            <button type="submit" class="btn btn-bien w-100 py-2">
+                                <i class="bi bi-check-circle me-1"></i> Xác nhận đặt phòng
+                            </button>
+                        }
+                        else
+                        {
+                            <a asp-controller="TaiKhoan" asp-action="DangNhap"
+                               asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)"
+                               class="btn btn-bien w-100 py-2">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Đăng nhập để đặt phòng
+                            </a>
+                        }
+                    </form>
+                }
+                else
+                {
+                    <div class="alert alert-danger mb-0">
+                        Phòng không khả dụng trong khoảng ngày đã chọn. Vui lòng chọn ngày khác hoặc phòng khác.
+                    </div>
+                    <a asp-action="TimKiem" asp-route-timKiem="true" class="btn btn-outline-primary w-100 mt-3">
+                        Tìm phòng khác
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const giaMotDem = parseFloat(document.getElementById('giaMotDem')?.value || '0');
+            const ngayNhan = document.getElementById('ngayNhan');
+            const ngayTra = document.getElementById('ngayTra');
+            const txtSoDem = document.getElementById('txtSoDem');
+            const txtTongTien = document.getElementById('txtTongTien');
+
+            function dinhDangVnd(n) {
+                return new Intl.NumberFormat('vi-VN').format(Math.round(n)) + ' ₫';
+            }
+
+            function capNhatTien() {
+                if (!ngayNhan || !ngayTra) return;
+                const nhan = new Date(ngayNhan.value);
+                const tra = new Date(ngayTra.value);
+                if (isNaN(nhan) || isNaN(tra)) return;
+                let soDem = Math.round((tra - nhan) / (1000 * 60 * 60 * 24));
+                if (soDem < 1) soDem = 1;
+                const tong = soDem * giaMotDem;
+                if (txtSoDem) txtSoDem.textContent = soDem;
+                if (txtTongTien) txtTongTien.textContent = dinhDangVnd(tong);
+            }
+
+            ngayNhan?.addEventListener('change', capNhatTien);
+            ngayTra?.addEventListener('change', capNhatTien);
+            capNhatTien();
+        })();
+    </script>
+}

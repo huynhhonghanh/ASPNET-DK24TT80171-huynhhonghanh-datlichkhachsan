@@ -1,0 +1,43 @@
+@model IEnumerable<LoaiPhong>
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Quản lý loại phòng";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-primary mb-0"><i class="bi bi-door-open me-2"></i>Loại phòng</h2>
+    <a asp-action="Tao" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Thêm mới</a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Tên loại</th>
+                    <th>Số người tối đa</th>
+                    <th>Mô tả</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var lp in Model)
+            {
+                <tr>
+                    <td class="fw-semibold">@lp.TenLoaiPhong</td>
+                    <td>@lp.SoNguoiToiDa người</td>
+                    <td class="text-muted small">@(lp.MoTa ?? "—")</td>
+                    <td class="text-end text-nowrap">
+                        <a asp-action="Sua" asp-route-id="@lp.MaLoaiPhong" class="btn btn-sm btn-outline-primary">Sửa</a>
+                        <form asp-action="Xoa" asp-route-id="@lp.MaLoaiPhong" method="post" class="d-inline"
+                              onsubmit="return confirm('Xóa loại phòng này?');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
