@@ -21,12 +21,7 @@ Sửa `appsettings.json` trước khi chạy. Truy cập: `http://localhost:5110
 | Admin | admin | Admin@123 |
 | Khách | khach1 | 123456 |
 
-## Backup DB
 
-```powershell
-.\backup-database.ps1
-```
 
 File trong thư mục `backups\` (.bak, .sql, .zip).
 
-*Báo cáo: `../đồ án.md` · Hướng dẫn đầy đủ: `../README.md`*

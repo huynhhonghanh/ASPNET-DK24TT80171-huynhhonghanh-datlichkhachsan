@@ -10,13 +10,6 @@
 [Dd]ebug/
 [Rr]elease/
 
-# Database backup (khong day len Git)
-**/backups/
-**/Backup/
-setup/dulieu/*.bak
-setup/dulieu/*.zip
-*.bak
-*.bak.zip
 
 # Secrets
 **/appsettings.json
